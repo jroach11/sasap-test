@@ -152,6 +152,52 @@ tail(catch_clean)</code></pre>
 ## 8538    NOP 1995    Chum              99
 ## 8539    NOP 1996    Chum              68
 ## 8540    NOP 1997    Chum              97</code></pre>
+<pre class="r"><code>test  &lt;- as.numeric(catch_clean$catch_thousands)</code></pre>
+<pre><code>## Warning: NAs introduced by coercion</code></pre>
+<pre class="r"><code>i &lt;- which(is.na(test) == T)
+catch_clean[i,]</code></pre>
+<pre><code>##     Region Year Species catch_thousands
+## 401    GSE 1955 Chinook               I</code></pre>
+<pre class="r"><code>print(i)</code></pre>
+<pre><code>## [1] 401</code></pre>
+<p><code>mutate</code> to create a new catch column fix typo in original data coerce to numeric multiply by 1000 to get catch</p>
+<pre class="r"><code>catch_clean_mutated &lt;- catch_clean %&gt;%
+  mutate(catch_thousands = ifelse(catch_thousands == 'I', 1, catch_thousands)) %&gt;% 
+  mutate(catch_thousands = as.numeric(catch_thousands)) %&gt;% 
+  mutate(catch = catch_thousands*1000)
+  tail(catch_clean_mutated)</code></pre>
+<pre><code>##      Region Year Species catch_thousands  catch
+## 8535    NOP 1992    Chum             342 342000
+## 8536    NOP 1993    Chum             135 135000
+## 8537    NOP 1994    Chum              84  84000
+## 8538    NOP 1995    Chum              99  99000
+## 8539    NOP 1996    Chum              68  68000
+## 8540    NOP 1997    Chum              97  97000</code></pre>
+<pre class="r"><code>catch_summarized &lt;- catch_clean_mutated %&gt;%
+  group_by(Region, Species) %&gt;%
+  summarize(mean_catch = mean(catch), n_obs = n())
+head(catch_summarized)</code></pre>
+<pre><code>## # A tibble: 6 x 4
+## # Groups:   Region [2]
+##   Region Species mean_catch n_obs
+##   &lt;chr&gt;  &lt;chr&gt;        &lt;dbl&gt; &lt;int&gt;
+## 1 ALU    Chinook       23.0    87
+## 2 ALU    Chum        2908.     87
+## 3 ALU    Coho         195.     87
+## 4 ALU    Pink      191954.     87
+## 5 ALU    Sockeye     6839.     87
+## 6 BER    Chinook       19.6   102</code></pre>
+<pre class="r"><code>catch_chinook &lt;- catch_clean_mutated %&gt;% 
+  filter(Species == &quot;Chinook&quot;) %&gt;% 
+  arrange(catch)
+head(catch_chinook)</code></pre>
+<pre><code>##   Region Year Species catch_thousands catch
+## 1    SSE 1886 Chinook               0     0
+## 2    SSE 1887 Chinook               0     0
+## 3    SSE 1888 Chinook               0     0
+## 4    SSE 1889 Chinook               0     0
+## 5    SSE 1890 Chinook               0     0
+## 6    SSE 1891 Chinook               0     0</code></pre>
 
 
 
