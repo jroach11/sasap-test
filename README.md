@@ -15,6 +15,8 @@ These changes were made in R Studio
 Jim's Changes
 =======
 
->>>>>>> 0402307f8a2afc79d3930606e7e02d973f27c5cc
 
 Jen added new line
+
+Jim added a new line 20.
+
