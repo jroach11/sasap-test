@@ -10,10 +10,8 @@ added by Jen
 
 These changes were made in R Studio
 
-<<<<<<< HEAD
 ## Heading 4
 Jim's Changes
-=======
 
 
 Jen added new line
